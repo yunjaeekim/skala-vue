@@ -161,6 +161,7 @@ const menuItems = computed(() => [
 .narrow {
   width: 100%;
   max-width: 600px;
+  margin: 0 auto;
 }
 
 :deep(.active-item > a) {

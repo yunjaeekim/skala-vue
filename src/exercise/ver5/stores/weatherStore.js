@@ -5,6 +5,7 @@ import axios from 'axios'
 // API 키는 .env.local 에서 읽는다. (VITE_ 접두사가 있어야 클라이언트에서 접근 가능)
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY
 const BASE_URL = 'https://api.openweathermap.org/data/2.5'
+const GEO_URL = 'https://api.openweathermap.org/geo/1.0'
 
 // OpenWeatherMap 은 좌표로 조회하므로 도시별 위경도를 미리 정의한다.
 // 응답의 name 은 영문("Seoul")으로 오기 때문에 화면에는 아래 name 을 사용한다.
@@ -157,6 +158,80 @@ export const useWeatherStore = defineStore('weather', () => {
     }
   }
 
+  // 요구사항 2 - Geocoding API 를 추가하여 임의의 도시를 검색할 수 있게 한다.
+  // 현재날씨 API 의 q 파라미터는 한글 도시명을 인식하지 못하므로(404),
+  // 먼저 Geocoding 으로 좌표를 얻은 뒤 그 좌표로 날씨를 조회한다.
+  async function searchCityByName(name) {
+    const keyword = (name ?? '').trim()
+    if (!keyword) return null
+    if (!API_KEY) {
+      errorMessage.value =
+        'API 키가 없습니다. .env.local 에 VITE_OPENWEATHER_API_KEY 를 설정해 주세요.'
+      return null
+    }
+
+    isLoading.value = true
+    errorMessage.value = ''
+
+    try {
+      // 1단계: 도시 이름 → 좌표
+      const geoResponse = await axios.get(`${GEO_URL}/direct`, {
+        params: { q: keyword, limit: 1, appid: API_KEY },
+      })
+
+      if (geoResponse.data.length === 0) {
+        errorMessage.value = `'${keyword}' 에 해당하는 도시를 찾지 못했습니다.`
+        return null
+      }
+
+      const place = geoResponse.data[0]
+      // 응답의 name 은 영문이므로 한국어 이름이 있으면 그것을 쓴다.
+      const displayName = place.local_names?.ko ?? place.name
+
+      // 2단계: 좌표 → 현재 날씨
+      const response = await axios.get(`${BASE_URL}/weather`, {
+        params: { lat: place.lat, lon: place.lon, appid: API_KEY, units: 'metric', lang: 'kr' },
+      })
+      const data = response.data
+      const cityId = `geo_${place.lat.toFixed(4)}_${place.lon.toFixed(4)}`
+
+      const city = {
+        id: cityId,
+        name: displayName,
+        temp: Math.round(data.main.temp),
+        status: data.weather[0].description,
+      }
+
+      details.value[cityId] = {
+        name: displayName,
+        temp: Math.round(data.main.temp),
+        feelsLike: Math.round(data.main.feels_like),
+        tempMin: Math.round(data.main.temp_min),
+        tempMax: Math.round(data.main.temp_max),
+        status: data.weather[0].description,
+        humidity: `${data.main.humidity}%`,
+        wind: `${data.wind.speed}m/s`,
+        country: data.sys.country,
+      }
+
+      // 이미 목록에 있으면 갱신하고, 없으면 추가한다.
+      const index = cities.value.findIndex((item) => item.id === cityId)
+      if (index >= 0) {
+        cities.value[index] = city
+      } else {
+        cities.value.push(city)
+      }
+
+      return displayName
+    } catch (error) {
+      errorMessage.value = '도시 검색에 실패했습니다. API 키와 네트워크 상태를 확인해 주세요.'
+      console.error('OpenWeatherMap 도시 검색 실패:', error)
+      return null
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   // 요구사항 2 - 5일 예보 API 를 추가하여 기능을 확장한다.
   // 3시간 단위로 40건이 오므로 정오(12:00) 항목만 남겨 하루 1건으로 정리한다.
   async function fetchForecast(cityId) {
@@ -212,6 +287,7 @@ export const useWeatherStore = defineStore('weather', () => {
     cityPresets,
     hasData,
     fetchCities,
+    searchCityByName,
     fetchForecast,
   }
 })

@@ -6,7 +6,7 @@ import Message from 'primevue/message'
 import ProgressSpinner from 'primevue/progressspinner'
 
 import BaseDashboardCard from '../../ver3-ui/BaseDashboardCard.vue'
-import SearchBar from '../../ver3-ui/SearchBar.vue'
+import SearchBar from '../SearchBar.vue'
 import WeatherCard from '../WeatherCardStore.vue'
 import { useWeatherStore } from '../../ver5/stores/weatherStore'
 
@@ -42,12 +42,25 @@ const filteredWeatherList = computed(() => weatherStore.searchCities(searchQuery
 const handleDetailJump = (id) => {
   router.push(`/weather/${id}`)
 }
+
+// 검색 버튼을 누르면 Geocoding + 현재날씨 API 로 해당 도시를 조회해 목록에 추가한다.
+const handleSearch = async (keyword) => {
+  const found = await weatherStore.searchCityByName(keyword)
+  if (found) {
+    selectedCityInfo.value = `${found} 의 날씨를 불러왔습니다.`
+  }
+}
 </script>
 
 <template>
   <div class="dashboard-wrapper">
     <BaseDashboardCard title="🔍 도시 검색">
-      <SearchBar :current-query="searchQuery" @update-query="(val) => (searchQuery = val)" />
+      <SearchBar
+        :current-query="searchQuery"
+        :loading="weatherStore.isLoading"
+        @update-query="(val) => (searchQuery = val)"
+        @search="handleSearch"
+      />
     </BaseDashboardCard>
 
     <BaseDashboardCard>
