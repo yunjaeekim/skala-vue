@@ -2,6 +2,8 @@
 import { ref, computed, watch, watchEffect } from 'vue'
 
 const searchQuery = ref('')
+// 검색 버튼을 눌렀을 때만 목록에 반영되는 검색어
+const appliedQuery = ref('')
 
 const weatherList = ref([
   { id: 'city_01', name: '서울', temp: 28, status: '맑음' },
@@ -16,13 +18,13 @@ for (let i = 0; i < weatherList.value.length; i++) {
 
 const filteredWeatherList = computed(() => {
   // 검색창이 비어 있으면 전체 출력
-  if (searchQuery.value === '') {
+  if (appliedQuery.value === '') {
     return weatherList.value
   }
 
-  if (candidates.includes(searchQuery.value)) {
+  if (candidates.includes(appliedQuery.value)) {
     for (let i = 0; i < weatherList.value.length; i++) {
-      if (weatherList.value[i].name === searchQuery.value) {
+      if (weatherList.value[i].name === appliedQuery.value) {
         return [weatherList.value[i]]
       }
     }
@@ -52,6 +54,11 @@ watch(searchQuery, (newQuery) => {
   console.log(`검색 기록에 '${newQuery}'을(를) 추가했습니다.`)
 })
 
+// 검색 버튼을 눌렀을 때만 검색어를 목록에 적용한다.
+const handleSearch = () => {
+  appliedQuery.value = searchQuery.value.trim()
+}
+
 const showDetail = (cityName, status) => {
   window.alert(`${cityName}의 현재 날씨는 [${status}] 상태입니다.`)
 }
@@ -61,16 +68,15 @@ const showDetail = (cityName, status) => {
   <div class="dashboard-wrapper">
     <section class="search-city">
       <h2>🔍 도시 검색</h2>
-      <div>
+      <div class="search-row">
         <input
           type="text"
           :value="searchQuery"
-          @input="(e) => (searchQuery = e.target.value)"
           placeholder="검색할 도시 이름 입력"
+          @input="(e) => (searchQuery = e.target.value)"
+          @keyup.enter="handleSearch"
         />
-        <p>
-          검색 중인 도시: <strong>{{ searchQuery }}</strong>
-        </p>
+        <button type="button" class="btn-search" @click="handleSearch">검색</button>
       </div>
     </section>
 
@@ -116,6 +122,32 @@ const showDetail = (cityName, status) => {
 </template>
 
 <style scoped>
+.search-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.search-row input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.btn-search {
+  padding: 8px 18px;
+  background: #4b6584;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
 .search-city {
   background: #f8f9fa;
   padding: 15px;

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 import BaseDashboardCard from '../../ver3/BaseDashboardCard.vue'
@@ -16,27 +16,32 @@ const weatherList = ref([
 ])
 
 const searchQuery = ref('')
+// 검색 버튼을 눌렀을 때만 목록에 반영되는 검색어
+const appliedQuery = ref('')
 const selectedCityInfo = ref('카드를 클릭하거나 검색해 보세요.')
 
 // 초기 마운트 시 주소창의 쿼리(?search=) 스트링 읽어서 상태 복원 (KeepAlive를 적용해야만 동작함)
 onMounted(() => {
   if (route.query.search) {
     searchQuery.value = route.query.search
+    appliedQuery.value = route.query.search
   }
 })
 
 // 타이핑될 때마다 주소창의 쿼리 스트링 값을 갱신
 // push가 아닌 replace를 쓰는 이유: 같은 화면에 머무르는 상태 갱신이므로
 // push를 쓰면 한 글자 입력마다 히스토리가 쌓여 뒤로가기가 동작하지 않는다.
-watch(searchQuery, (newQuery) => {
+// 검색 버튼을 눌렀을 때만 검색어를 적용하고 주소도 갱신한다.
+const handleSearch = (keyword) => {
+  appliedQuery.value = (keyword ?? '').trim()
   router.replace({
     path: route.path,
-    query: { search: newQuery || undefined },
+    query: { search: appliedQuery.value || undefined },
   })
-})
+}
 
 const filteredWeatherList = computed(() => {
-  const query = searchQuery.value.trim()
+  const query = appliedQuery.value
   if (!query) return weatherList.value
   return weatherList.value.filter((item) => item.name.includes(query))
 })
@@ -50,7 +55,11 @@ const handleDetailJump = (id) => {
 <template>
   <div class="dashboard-wrapper">
     <BaseDashboardCard>
-      <SearchBar :current-query="searchQuery" @update-query="(val) => (searchQuery = val)" />
+      <SearchBar
+        :current-query="searchQuery"
+        @update-query="(val) => (searchQuery = val)"
+        @search="handleSearch"
+      />
     </BaseDashboardCard>
 
     <BaseDashboardCard>

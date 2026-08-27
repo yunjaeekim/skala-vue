@@ -1,9 +1,12 @@
 <script setup>
+import Button from 'primevue/button'
 import IconField from 'primevue/iconfield'
 import InputIcon from 'primevue/inputicon'
 import InputText from 'primevue/inputtext'
 
-defineEmits(['update-query'])
+// update-query : 입력값 변경 (한글 조합 중에도 즉시 전달)
+// search       : 검색 버튼 클릭 (이때만 목록에 반영)
+defineEmits(['update-query', 'search'])
 
 defineProps({
   currentQuery: {
@@ -14,8 +17,8 @@ defineProps({
 </script>
 
 <template>
-  <div class="search-inner">
-    <IconField>
+  <div class="search-row">
+    <IconField class="field">
       <InputIcon class="pi pi-search" />
       <!--
         v-model 대신 :value + @input 을 유지한다.
@@ -27,19 +30,22 @@ defineProps({
         placeholder="검색할 도시 이름 입력"
         fluid
         @input="$emit('update-query', $event.target.value)"
+        @keyup.enter="$emit('search', currentQuery)"
       />
     </IconField>
 
-    <p class="hint">
-      검색 중인 도시: <strong>{{ currentQuery || '(없음)' }}</strong>
-    </p>
+    <Button label="검색" icon="pi pi-search" @click="$emit('search', currentQuery)" />
   </div>
 </template>
 
 <style scoped>
-.hint {
-  margin: 8px 0 0 0;
-  font-size: 13px;
-  color: var(--p-text-muted-color);
+.search-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.field {
+  flex: 1;
 }
 </style>

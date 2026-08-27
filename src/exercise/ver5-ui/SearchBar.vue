@@ -41,10 +41,6 @@ defineEmits(['update-query', 'search'])
         @click="$emit('search', currentQuery)"
       />
     </div>
-
-    <p class="hint">
-      목록에 없는 도시는 <strong>검색</strong> 버튼을 누르면 OpenWeatherMap 에서 불러옵니다.
-    </p>
   </div>
 </template>
 
@@ -57,11 +53,5 @@ defineEmits(['update-query', 'search'])
 
 .field {
   flex: 1;
-}
-
-.hint {
-  margin: 8px 0 0 0;
-  font-size: 13px;
-  color: var(--p-text-muted-color);
 }
 </style>

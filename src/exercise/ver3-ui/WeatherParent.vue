@@ -12,6 +12,8 @@ import SearchHistory from './SearchHistory.vue'
 const toast = useToast()
 
 const searchQuery = ref('')
+// 검색 버튼을 눌렀을 때만 목록에 반영되는 검색어
+const appliedQuery = ref('')
 
 const weatherList = ref([
   { id: 'city_01', name: '서울', temp: 28, status: '맑음' },
@@ -25,13 +27,13 @@ for (let i = 0; i < weatherList.value.length; i++) {
 }
 
 const filteredWeatherList = computed(() => {
-  if (searchQuery.value === '') {
+  if (appliedQuery.value === '') {
     return weatherList.value
   }
 
-  if (candidates.includes(searchQuery.value)) {
+  if (candidates.includes(appliedQuery.value)) {
     for (let i = 0; i < weatherList.value.length; i++) {
-      if (weatherList.value[i].name === searchQuery.value) {
+      if (weatherList.value[i].name === appliedQuery.value) {
         return [weatherList.value[i]]
       }
     }
@@ -39,6 +41,11 @@ const filteredWeatherList = computed(() => {
 
   return []
 })
+
+// 검색 버튼을 눌렀을 때만 검색어를 목록에 적용한다.
+const handleSearch = (keyword) => {
+  appliedQuery.value = (keyword ?? '').trim()
+}
 const selectedCityInfo = ref('카드를 클릭하거나 검색해 보세요.')
 
 watch(selectedCityInfo, (newInfo) => {
@@ -75,7 +82,11 @@ const showDetail = (cityName, status) => {
     <Toast position="top-right" />
 
     <BaseDashboardCard title="🔍 도시 검색">
-      <SearchBar :current-query="searchQuery" @update-query="(val) => (searchQuery = val)" />
+      <SearchBar
+        :current-query="searchQuery"
+        @update-query="(val) => (searchQuery = val)"
+        @search="handleSearch"
+      />
     </BaseDashboardCard>
 
     <BaseDashboardCard title="🕘 검색 기록">

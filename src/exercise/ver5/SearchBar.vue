@@ -36,8 +36,6 @@ defineEmits(['update-query', 'search'])
         {{ loading ? '조회 중…' : '검색' }}
       </button>
     </div>
-
-    <p class="hint">목록에 없는 도시는 검색 버튼을 누르면 OpenWeatherMap 에서 불러옵니다.</p>
   </div>
 </template>
 
@@ -71,11 +69,5 @@ defineEmits(['update-query', 'search'])
 .btn-search:disabled {
   background: #a5b1c2;
   cursor: default;
-}
-
-.hint {
-  margin: 8px 0 0 0;
-  font-size: 13px;
-  color: #868e96;
 }
 </style>

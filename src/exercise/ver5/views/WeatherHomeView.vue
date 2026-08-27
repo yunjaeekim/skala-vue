@@ -17,10 +17,13 @@ const searchQuery = ref('')
 const selectedCityInfo = ref('카드를 클릭하거나 검색해 보세요.')
 // 검색 버튼으로 조회한 도시. 값이 있으면 그 도시만 화면에 남긴다.
 const searchedCityId = ref('')
+// 검색 버튼을 눌렀을 때만 목록에 반영되는 검색어
+const appliedQuery = ref('')
 
 onMounted(() => {
   if (route.query.search) {
     searchQuery.value = route.query.search
+    appliedQuery.value = route.query.search
   }
   // 아직 받아온 데이터가 없을 때만 API 를 호출한다.
   if (!weatherStore.hasData) {
@@ -29,13 +32,9 @@ onMounted(() => {
 })
 
 // 같은 화면에 머무르는 상태 갱신이므로 push 가 아닌 replace 를 사용한다.
-watch(searchQuery, (newQuery) => {
-  // 다시 입력을 시작하면 검색 결과 고정을 풀고 목록 전체로 돌아간다.
+// 다시 입력을 시작하면 이전 검색 결과 고정을 푼다.
+watch(searchQuery, () => {
   searchedCityId.value = ''
-  router.replace({
-    path: route.path,
-    query: { search: newQuery || undefined },
-  })
 })
 
 const filteredWeatherList = computed(() => {
@@ -44,7 +43,7 @@ const filteredWeatherList = computed(() => {
     const city = weatherStore.getCityById(searchedCityId.value)
     return city ? [city] : []
   }
-  return weatherStore.searchCities(searchQuery.value)
+  return weatherStore.searchCities(appliedQuery.value)
 })
 
 const handleDetailJump = (id) => {
@@ -54,6 +53,13 @@ const handleDetailJump = (id) => {
 // 검색 버튼을 누르면 Geocoding + 현재날씨 API 로 조회해 목록에 추가하고,
 // 그 도시만 화면에 남긴다.
 const handleSearch = async (keyword) => {
+  appliedQuery.value = (keyword ?? '').trim()
+  // 검색 시점에만 주소의 쿼리 스트링을 갱신한다.
+  router.replace({
+    path: route.path,
+    query: { search: appliedQuery.value || undefined },
+  })
+
   const cityId = await weatherStore.searchCityByName(keyword)
   if (!cityId) return
 
