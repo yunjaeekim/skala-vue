@@ -106,7 +106,8 @@ const selectCity = (cityId) => {
 
 <style scoped>
 .history-wrapper {
-  width: 600px;
+  width: 100%;
+  max-width: 1100px;
   margin: 0 auto;
 }
 

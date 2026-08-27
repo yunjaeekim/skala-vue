@@ -58,9 +58,11 @@ const menuItems = computed(() => [
 
 <style scoped>
 .app-container {
-  max-width: 900px;
+  width: 100%;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 32px 24px 48px 24px;
+  box-sizing: border-box;
 }
 
 .app-container h1 {

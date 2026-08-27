@@ -8,7 +8,8 @@ Vue 3 학습 실습 과제를 과제 단위로 정리한 저장소입니다.
 
 ```
 src/exercise/
-├── App1.vue ~ App7.vue   과제별 진입점
+├── AppTabs.vue           통합 진입점 (과제별 탭 전환)
+├── App1.vue ~ App7.vue   과제별 단독 진입점
 ├── day1/                 SearchCity, WeatherByRegion
 ├── day2/                 WeatherComposition
 ├── day3/                 BaseDashboardCard, SearchBar, SearchHistory,
@@ -33,12 +34,19 @@ src/exercise/
 
 ## 실행 방법
 
-`src/main.js`에서 실행할 과제를 선택합니다.
+기본 진입점은 `AppTabs.vue`이며, 과제별 화면을 상단 탭으로 전환하며 확인할 수 있습니다.
+
+```js
+import App from './exercise/AppTabs.vue'
+import router from './exercise/day7/router'
+```
+
+특정 과제만 단독으로 실행하려면 `src/main.js`에서 진입점을 교체합니다.
 과제 4부터는 라우터를 사용하므로 `App`과 `router`를 항상 짝으로 교체해야 합니다.
 
 ```js
-import App from './exercise/App7.vue'
-import router from './exercise/day7/router'
+import App from './exercise/App5.vue'
+import router from './exercise/day5/router'
 ```
 
 ```bash

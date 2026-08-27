@@ -74,13 +74,15 @@ const handleDetailJump = (id) => {
         </div>
 
         <template v-else>
-          <WeatherCard
-            v-for="item in filteredWeatherList"
-            :key="item.id"
-            :city-item="item"
-            @select-card="(msg) => (selectedCityInfo = msg)"
-            @click-detail="handleDetailJump(item.id)"
-          />
+          <div class="card-grid">
+            <WeatherCard
+              v-for="item in filteredWeatherList"
+              :key="item.id"
+              :city-item="item"
+              @select-card="(msg) => (selectedCityInfo = msg)"
+              @click-detail="handleDetailJump(item.id)"
+            />
+          </div>
 
           <Message v-if="filteredWeatherList.length === 0" severity="warn" :closable="false">
             검색 결과와 일치하는 도시가 없습니다.
@@ -95,7 +97,8 @@ const handleDetailJump = (id) => {
 
 <style scoped>
 .dashboard-wrapper {
-  width: 600px;
+  width: 100%;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -109,6 +112,13 @@ const handleDetailJump = (id) => {
 .section-title {
   font-size: 15px;
   font-weight: 700;
+}
+
+/* 넓은 화면에서는 카드를 가로로 배치한다. */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
 }
 
 .loading {

@@ -96,7 +96,8 @@ const cityData = computed(() => weatherStore.getDetailById(route.params.cityId))
 
 <style scoped>
 .detail-wrapper {
-  width: 600px;
+  width: 100%;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
