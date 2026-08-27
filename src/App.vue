@@ -32,7 +32,6 @@ import ModelModifier from './components/practices/basic/ModelModifier.vue'
 // 5. Vue Style Handling
 import StyleScoped from './components/practices/basic/StyleScoped.vue'
 import StoreCounter from './components/practices/library/StoreCounter.vue'
-import { useConfigStore } from './exercise/stores/configStore.js'
 </script>
 
 <template>

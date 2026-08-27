@@ -16,7 +16,9 @@ import WeatherComposition from './day2/WeatherComposition.vue'
 import WeatherParent from './day3/WeatherParent.vue'
 import WeatherParentUi from './day6/WeatherParent.vue'
 import UnitToggler from './day7/UnitToggler.vue'
-import PracticeBoard from '../App3.vue'
+import PracticeBasic from '../App.vue'
+import PracticeComponent from '../App2.vue'
+import PracticeLibrary from '../App3.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -69,9 +71,11 @@ const menuItems = computed(() => [
         <Tab value="0">과제 1 · Mockup</Tab>
         <Tab value="1">과제 2 · Composition</Tab>
         <Tab value="2">과제 3 · 컴포넌트</Tab>
-        <Tab value="3">과제 6 · UI Library</Tab>
+        <Tab value="3">과제 3 - UI Library</Tab>
         <Tab value="4">과제 4·5 · 라우터 / 스토어 / API</Tab>
-        <Tab value="5">라이브러리 실습</Tab>
+        <Tab value="5">실습 · 디렉티브 / 이벤트 / 폼</Tab>
+        <Tab value="6">실습 · 컴포넌트 / Composition</Tab>
+        <Tab value="7">실습 · Store / Axios / UI Library</Tab>
       </TabList>
 
       <TabPanels>
@@ -106,7 +110,15 @@ const menuItems = computed(() => [
         </TabPanel>
 
         <TabPanel value="5">
-          <PracticeBoard />
+          <PracticeBasic />
+        </TabPanel>
+
+        <TabPanel value="6">
+          <PracticeComponent />
+        </TabPanel>
+
+        <TabPanel value="7">
+          <PracticeLibrary />
         </TabPanel>
       </TabPanels>
     </Tabs>

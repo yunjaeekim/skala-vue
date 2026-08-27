@@ -4,11 +4,15 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
+// 배포 대상에 따라 base 경로가 달라진다.
+// - GitHub Pages : https://<user>.github.io/<repo>/ 하위 경로 → '/skala-vue/'
+// - Vercel       : https://<project>.vercel.app/ 루트        → '/'
+// Vercel 은 빌드 환경에 VERCEL 환경변수를 자동으로 넣어주므로 이것으로 구분한다.
+const isVercel = Boolean(process.env.VERCEL)
+
 // https://vite.dev/config/
 export default defineConfig(({ command }) => ({
-  // GitHub Pages 는 https://<user>.github.io/<repo>/ 하위 경로로 서비스된다.
-  // 빌드할 때만 저장소 이름을 base 로 지정하고, 로컬 개발 서버는 '/' 를 유지한다.
-  base: command === 'build' ? '/skala-vue/' : '/',
+  base: command === 'build' && !isVercel ? '/skala-vue/' : '/',
   plugins: [vue(), vueDevTools()],
   resolve: {
     alias: {
