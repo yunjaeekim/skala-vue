@@ -18,6 +18,8 @@ const weatherStore = useWeatherStore()
 
 const searchQuery = ref('')
 const selectedCityInfo = ref('카드를 클릭하거나 검색해 보세요.')
+// 검색 버튼으로 조회한 도시. 값이 있으면 그 도시만 화면에 남긴다.
+const searchedCityId = ref('')
 
 onMounted(() => {
   if (route.query.search) {
@@ -31,13 +33,22 @@ onMounted(() => {
 
 // 같은 화면에 머무르는 상태 갱신이므로 push 가 아닌 replace 를 사용한다.
 watch(searchQuery, (newQuery) => {
+  // 다시 입력을 시작하면 검색 결과 고정을 풀고 목록 전체로 돌아간다.
+  searchedCityId.value = ''
   router.replace({
     path: route.path,
     query: { search: newQuery || undefined },
   })
 })
 
-const filteredWeatherList = computed(() => weatherStore.searchCities(searchQuery.value))
+const filteredWeatherList = computed(() => {
+  // 검색으로 조회한 도시가 있으면 그 도시 하나만 출력한다.
+  if (searchedCityId.value) {
+    const city = weatherStore.getCityById(searchedCityId.value)
+    return city ? [city] : []
+  }
+  return weatherStore.searchCities(searchQuery.value)
+})
 
 const handleDetailJump = (id) => {
   router.push(`/weather/${id}`)
@@ -45,9 +56,13 @@ const handleDetailJump = (id) => {
 
 // 검색 버튼을 누르면 Geocoding + 현재날씨 API 로 해당 도시를 조회해 목록에 추가한다.
 const handleSearch = async (keyword) => {
-  const found = await weatherStore.searchCityByName(keyword)
-  if (found) {
-    selectedCityInfo.value = `${found} 의 날씨를 불러왔습니다.`
+  const cityId = await weatherStore.searchCityByName(keyword)
+  if (!cityId) return
+
+  searchedCityId.value = cityId
+  const city = weatherStore.getCityById(cityId)
+  if (city) {
+    selectedCityInfo.value = `${city.name} 의 날씨를 불러왔습니다.`
   }
 }
 </script>

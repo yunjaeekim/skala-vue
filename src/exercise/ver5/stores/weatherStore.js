@@ -185,15 +185,22 @@ export const useWeatherStore = defineStore('weather', () => {
       }
 
       const place = geoResponse.data[0]
+
+      // 이미 목록에 있는 도시를 다시 검색한 경우 중복 카드가 생기지 않도록,
+      // 좌표가 거의 같은 프리셋이 있으면 그 id 와 이름을 그대로 재사용한다.
+      const preset = CITY_PRESETS.find(
+        (item) => Math.abs(item.lat - place.lat) < 0.05 && Math.abs(item.lon - place.lon) < 0.05,
+      )
+
       // 응답의 name 은 영문이므로 한국어 이름이 있으면 그것을 쓴다.
-      const displayName = place.local_names?.ko ?? place.name
+      const displayName = preset ? preset.name : (place.local_names?.ko ?? place.name)
 
       // 2단계: 좌표 → 현재 날씨
       const response = await axios.get(`${BASE_URL}/weather`, {
         params: { lat: place.lat, lon: place.lon, appid: API_KEY, units: 'metric', lang: 'kr' },
       })
       const data = response.data
-      const cityId = `geo_${place.lat.toFixed(4)}_${place.lon.toFixed(4)}`
+      const cityId = preset ? preset.id : `geo_${place.lat.toFixed(4)}_${place.lon.toFixed(4)}`
 
       const city = {
         id: cityId,
@@ -222,7 +229,8 @@ export const useWeatherStore = defineStore('weather', () => {
         cities.value.push(city)
       }
 
-      return displayName
+      // 화면에서 검색 결과만 걸러낼 수 있도록 도시 id 를 돌려준다.
+      return cityId
     } catch (error) {
       errorMessage.value = '도시 검색에 실패했습니다. API 키와 네트워크 상태를 확인해 주세요.'
       console.error('OpenWeatherMap 도시 검색 실패:', error)
