@@ -8,20 +8,28 @@ Vue 3 학습 실습 과제를 과제 단위로 정리한 저장소입니다.
 
 ```
 src/exercise/
-├── App1.vue ~ App5.vue   과제별 진입점
+├── App1.vue ~ App7.vue   과제별 진입점
 ├── day1/                 SearchCity, WeatherByRegion
 ├── day2/                 WeatherComposition
 ├── day3/                 BaseDashboardCard, SearchBar, SearchHistory,
 │                         WeatherCard, WeatherParent
 ├── day4/                 router.js
 │   └── views/            Home, Detail, About, History, NotFound
-└── day5/                 UnitToggler, WeatherCardStore, router.js
-    ├── stores/           configStore, weatherStore
-    └── views/            Home, Detail, History (스토어 적용)
+├── day5/                 UnitToggler, WeatherCardStore, router.js
+│   ├── stores/           configStore, weatherStore
+│   └── views/            Home, Detail, History, Forecast (스토어 · API 적용)
+├── day6/                 과제 3 화면에 PrimeVue 적용
+└── day7/                 전체 화면에 PrimeVue 적용
+    ├── router.js
+    └── views/            Home, Detail, Forecast, About, NotFound
 ```
 
 `day5`는 기온이 표시되는 화면만 전용 View를 사용하고,
 기온과 무관한 화면(`About`, `NotFound`)은 `day4`의 View를 그대로 재사용합니다.
+
+`day7`은 화면(View)만 새로 작성하고,
+데이터 로직은 `day5`의 스토어를, 공통 컴포넌트는 `day6`의 것을 재사용합니다.
+이렇게 구성하면 뒤 과제를 진행해도 앞 과제의 화면이 그대로 보존됩니다.
 
 ## 실행 방법
 
@@ -29,14 +37,17 @@ src/exercise/
 과제 4부터는 라우터를 사용하므로 `App`과 `router`를 항상 짝으로 교체해야 합니다.
 
 ```js
-import App from './exercise/App5.vue'
-import router from './exercise/day5/router'
+import App from './exercise/App7.vue'
+import router from './exercise/day7/router'
 ```
 
 ```bash
 npm install
 npm run dev
 ```
+
+OpenWeatherMap API를 사용하므로 `.env.example`을 `.env.local`로 복사한 뒤
+발급받은 키를 입력해야 실시간 날씨 데이터가 표시됩니다.
 
 ## 1. Weather Mockup.ver1
 
@@ -214,3 +225,55 @@ Weather Mockup.ver4에서는 화면을 이동하면 View가 다시 생성되어 
 `props`와 `emit`만으로는 화면 사이에 값을 전달하기 어려웠습니다.
 스토어를 적용한 뒤에는 화면 계층이나 이동 여부와 관계없이
 같은 상태를 공유할 수 있다는 점을 확인하였습니다.
+
+## 6. Weather Mockup.ver6
+
+### 구현한 기능
+
+- 외부 UI Library로 PrimeVue 선정 및 적용
+- 과제 3 화면에 UI Library 적용 (`App6.vue`)
+- 전체 화면에 UI Library 적용 (`App7.vue`)
+- `Menubar`를 이용한 Navigation Bar 구성
+- `DataTable`을 이용한 예보 데이터 출력 및 정렬
+- `Toast`, `Message`를 이용한 알림 및 상태 표시
+
+외부 UI Library로 PrimeVue를 선정하였습니다.
+Element Plus와 비교하였을 때 컴포넌트 종류가 더 많고,
+컴포넌트를 파일 단위로 불러오는 방식이라 사용한 것만 번들에 포함된다는 점을 고려하였습니다.
+실제로 두 라이브러리를 각각 적용해 빌드해 본 결과
+전역 등록 방식에서는 CSS가 355KB였으나 PrimeVue에서는 17KB로 줄어드는 것을 확인하였습니다.
+
+적용 범위는 두 단계로 나누었습니다.
+`App6.vue`는 과제 3의 단일 화면에 UI Library를 적용한 것이고,
+`App7.vue`는 라우터와 스토어, API 연동이 모두 포함된 전체 화면에 적용한 것입니다.
+
+기존 컴포넌트를 직접 수정하지 않고 `day6`, `day7` 폴더를 새로 작성하였습니다.
+`day3`의 컴포넌트는 과제 4와 과제 5가 함께 사용하고 있어,
+직접 수정할 경우 앞선 과제의 화면까지 함께 변경되기 때문입니다.
+`props`와 `emit` 계약, `computed`와 `watch` 등의 반응형 로직은 그대로 유지하고
+마크업과 스타일만 교체하여, 원본과 비교할 수 있도록 구현하였습니다.
+
+주요 교체 내역은 다음과 같습니다.
+
+| 기존                   | PrimeVue                  |
+| ---------------------- | ------------------------- |
+| 직접 작성한 카드 `div` | `Card`                    |
+| `input`                | `IconField` + `InputText` |
+| 더움 / 선선함 뱃지     | `Tag`                     |
+| 상세보기 버튼          | `Button`                  |
+| 검색 기록 목록         | `Chip`                    |
+| 상태바, 안내 문구      | `Message`                 |
+| `window.alert()`       | `Toast`                   |
+| `RouterLink` 나열      | `Menubar`                 |
+| 직접 작성한 `table`    | `DataTable`               |
+| 단위 변경 버튼         | `SelectButton`            |
+
+`DataTable`을 적용하면서 예보 표에 날짜, 기온, 습도 기준 정렬 기능이 추가되었습니다.
+직접 구현하지 않아도 라이브러리가 제공하는 기능을 그대로 사용할 수 있다는 점을 확인하였습니다.
+
+이번 실습을 통해 UI Library를 적용할 때는
+컴포넌트가 기본으로 제공하는 동작이 기존 요구사항과 충돌하지 않는지
+확인해야 한다는 점을 학습하였습니다.
+검색 입력창의 경우 `v-model`을 사용하면 한글 조합 중에는 값이 갱신되지 않기 때문에,
+과제 3의 한글 즉시 동기화 동작을 유지하기 위해
+`:value`와 `@input`으로 직접 바인딩하는 방식을 그대로 사용하였습니다.
