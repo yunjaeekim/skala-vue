@@ -9,8 +9,8 @@ import Message from 'primevue/message'
 import SelectButton from 'primevue/selectbutton'
 import Tag from 'primevue/tag'
 
-import { useConfigStore } from '../../day5/stores/configStore'
-import { useWeatherStore } from '../../day5/stores/weatherStore'
+import { useConfigStore } from '../../ver5/stores/configStore'
+import { useWeatherStore } from '../../ver5/stores/weatherStore'
 
 const route = useRoute()
 const router = useRouter()
@@ -82,7 +82,7 @@ const selectCity = (cityId) => {
             입니다.
           </Message>
 
-          <!-- day5 의 직접 만든 <table> 을 PrimeVue DataTable 로 대체 (정렬 지원) -->
+          <!-- ver5 의 직접 만든 <table> 을 PrimeVue DataTable 로 대체 (정렬 지원) -->
           <DataTable
             :value="records"
             :loading="weatherStore.isLoading"

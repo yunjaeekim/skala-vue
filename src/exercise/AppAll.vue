@@ -1,11 +1,11 @@
 <script setup>
 // 과제 1 ~ 5 를 한 화면에서 모두 확인하기 위한 통합 진입점.
 // 기존 파일은 수정하지 않고, 각 과제의 컴포넌트를 그대로 가져와 배치한다.
-import SearchCity from './day1/SearchCity.vue'
-import WeatherByRegion from './day1/WeatherByRegion.vue'
-import WeatherComposition from './day2/WeatherComposition.vue'
-import WeatherParent from './day3/WeatherParent.vue'
-import UnitToggler from './day5/UnitToggler.vue'
+import SearchCity from './ver1/SearchCity.vue'
+import WeatherByRegion from './ver1/WeatherByRegion.vue'
+import WeatherComposition from './ver2/WeatherComposition.vue'
+import WeatherParent from './ver3/WeatherParent.vue'
+import UnitToggler from './ver5/UnitToggler.vue'
 </script>
 
 <template>
@@ -42,7 +42,7 @@ import UnitToggler from './day5/UnitToggler.vue'
         <RouterLink to="/about" class="nav-item">ℹ️ 서비스 소개</RouterLink>
       </nav>
       <main>
-        <RouterView name="day4" />
+        <RouterView name="ver4" />
       </main>
     </div>
   </div>
@@ -63,7 +63,7 @@ import UnitToggler from './day5/UnitToggler.vue'
         <UnitToggler />
       </nav>
       <main>
-        <RouterView name="day5" />
+        <RouterView name="ver5" />
       </main>
     </div>
   </div>

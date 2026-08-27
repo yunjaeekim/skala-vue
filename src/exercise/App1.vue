@@ -1,6 +1,6 @@
 <script setup>
-import SearchCity from './day1/SearchCity.vue'
-import WeatherByRegion from './day1/WeatherByRegion.vue'
+import SearchCity from './ver1/SearchCity.vue'
+import WeatherByRegion from './ver1/WeatherByRegion.vue'
 </script>
 
 <template>

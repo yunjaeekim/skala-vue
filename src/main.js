@@ -17,13 +17,13 @@ import 'primeicons/primeicons.css'
 // import App from './exercise/App2.vue'
 // import App from './exercise/App3.vue'
 // import App from './exercise/App4.vue'
-// import router from './exercise/day4/router'
+// import router from './exercise/ver4/router'
 // import App from './exercise/App5.vue'
-// import router from './exercise/day5/router'
-// import App from './exercise/App6.vue'
-// import App from './exercise/App7.vue'
+// import router from './exercise/ver5/router'
+// import App from './exercise/App3Ui.vue'
+// import App from './exercise/App5Ui.vue'
 import App from './exercise/AppTabs.vue'
-import router from './exercise/day7/router'
+import router from './exercise/ver5-ui/router'
 
 const app = createApp(App)
 

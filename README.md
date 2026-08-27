@@ -9,27 +9,27 @@ Vue 3 학습 실습 과제를 과제 단위로 정리한 저장소입니다.
 ```
 src/exercise/
 ├── AppTabs.vue           통합 진입점 (과제별 탭 전환)
-├── App1.vue ~ App7.vue   과제별 단독 진입점
-├── day1/                 SearchCity, WeatherByRegion
-├── day2/                 WeatherComposition
-├── day3/                 BaseDashboardCard, SearchBar, SearchHistory,
+├── App1.vue ~ App5Ui.vue   과제별 단독 진입점
+├── ver1/                 SearchCity, WeatherByRegion
+├── ver2/                 WeatherComposition
+├── ver3/                 BaseDashboardCard, SearchBar, SearchHistory,
 │                         WeatherCard, WeatherParent
-├── day4/                 router.js
+├── ver4/                 router.js
 │   └── views/            Home, Detail, About, History, NotFound
-├── day5/                 UnitToggler, WeatherCardStore, router.js
+├── ver5/                 UnitToggler, WeatherCardStore, router.js
 │   ├── stores/           configStore, weatherStore
 │   └── views/            Home, Detail, History, Forecast (스토어 · API 적용)
-├── day6/                 과제 3 화면에 PrimeVue 적용
-└── day7/                 전체 화면에 PrimeVue 적용
+├── ver3-ui/                 과제 3 화면에 PrimeVue 적용
+└── ver5-ui/                 전체 화면에 PrimeVue 적용
     ├── router.js
     └── views/            Home, Detail, Forecast, About, NotFound
 ```
 
-`day5`는 기온이 표시되는 화면만 전용 View를 사용하고,
-기온과 무관한 화면(`About`, `NotFound`)은 `day4`의 View를 그대로 재사용합니다.
+`ver5`는 기온이 표시되는 화면만 전용 View를 사용하고,
+기온과 무관한 화면(`About`, `NotFound`)은 `ver4`의 View를 그대로 재사용합니다.
 
-`day7`은 화면(View)만 새로 작성하고,
-데이터 로직은 `day5`의 스토어를, 공통 컴포넌트는 `day6`의 것을 재사용합니다.
+`ver5-ui`은 화면(View)만 새로 작성하고,
+데이터 로직은 `ver5`의 스토어를, 공통 컴포넌트는 `ver3-ui`의 것을 재사용합니다.
 이렇게 구성하면 뒤 과제를 진행해도 앞 과제의 화면이 그대로 보존됩니다.
 
 ## 실행 방법
@@ -38,7 +38,7 @@ src/exercise/
 
 ```js
 import App from './exercise/AppTabs.vue'
-import router from './exercise/day7/router'
+import router from './exercise/ver5-ui/router'
 ```
 
 특정 과제만 단독으로 실행하려면 `src/main.js`에서 진입점을 교체합니다.
@@ -46,7 +46,7 @@ import router from './exercise/day7/router'
 
 ```js
 import App from './exercise/App5.vue'
-import router from './exercise/day5/router'
+import router from './exercise/ver5/router'
 ```
 
 ```bash
@@ -234,13 +234,13 @@ Weather Mockup.ver4에서는 화면을 이동하면 View가 다시 생성되어 
 스토어를 적용한 뒤에는 화면 계층이나 이동 여부와 관계없이
 같은 상태를 공유할 수 있다는 점을 확인하였습니다.
 
-## 6. Weather Mockup.ver6
+## 6. Weather Mockup.ver3-ui
 
 ### 구현한 기능
 
 - 외부 UI Library로 PrimeVue 선정 및 적용
-- 과제 3 화면에 UI Library 적용 (`App6.vue`)
-- 전체 화면에 UI Library 적용 (`App7.vue`)
+- 과제 3 화면에 UI Library 적용 (`App3Ui.vue`)
+- 전체 화면에 UI Library 적용 (`App5Ui.vue`)
 - `Menubar`를 이용한 Navigation Bar 구성
 - `DataTable`을 이용한 예보 데이터 출력 및 정렬
 - `Toast`, `Message`를 이용한 알림 및 상태 표시
@@ -252,11 +252,11 @@ Element Plus와 비교하였을 때 컴포넌트 종류가 더 많고,
 전역 등록 방식에서는 CSS가 355KB였으나 PrimeVue에서는 17KB로 줄어드는 것을 확인하였습니다.
 
 적용 범위는 두 단계로 나누었습니다.
-`App6.vue`는 과제 3의 단일 화면에 UI Library를 적용한 것이고,
-`App7.vue`는 라우터와 스토어, API 연동이 모두 포함된 전체 화면에 적용한 것입니다.
+`App3Ui.vue`는 과제 3의 단일 화면에 UI Library를 적용한 것이고,
+`App5Ui.vue`는 라우터와 스토어, API 연동이 모두 포함된 전체 화면에 적용한 것입니다.
 
-기존 컴포넌트를 직접 수정하지 않고 `day6`, `day7` 폴더를 새로 작성하였습니다.
-`day3`의 컴포넌트는 과제 4와 과제 5가 함께 사용하고 있어,
+기존 컴포넌트를 직접 수정하지 않고 `ver3-ui`, `ver5-ui` 폴더를 새로 작성하였습니다.
+`ver3`의 컴포넌트는 과제 4와 과제 5가 함께 사용하고 있어,
 직접 수정할 경우 앞선 과제의 화면까지 함께 변경되기 때문입니다.
 `props`와 `emit` 계약, `computed`와 `watch` 등의 반응형 로직은 그대로 유지하고
 마크업과 스타일만 교체하여, 원본과 비교할 수 있도록 구현하였습니다.

@@ -59,7 +59,7 @@ watch(searchQuery, (newQuery) => {
   searchHistory.value.push(newQuery)
 })
 
-// day3 의 window.alert() 를 PrimeVue 의 Toast 로 대체한다.
+// ver3 의 window.alert() 를 PrimeVue 의 Toast 로 대체한다.
 const showDetail = (cityName, status) => {
   toast.add({
     severity: 'info',
@@ -94,13 +94,13 @@ const showDetail = (cityName, status) => {
         @click-detail="showDetail"
       />
 
-      <!-- day3 의 인라인 style 문구를 Message 로 대체 -->
+      <!-- ver3 의 인라인 style 문구를 Message 로 대체 -->
       <Message v-if="filteredWeatherList.length === 0" severity="warn" :closable="false">
         검색 결과와 일치하는 도시가 없습니다.
       </Message>
     </BaseDashboardCard>
 
-    <!-- day3 의 .SelectCity 상태바를 Message 로 대체 -->
+    <!-- ver3 의 .SelectCity 상태바를 Message 로 대체 -->
     <Message severity="success" :closable="false">{{ selectedCityInfo }}</Message>
   </div>
 </template>

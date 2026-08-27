@@ -7,8 +7,8 @@ import Message from 'primevue/message'
 import ProgressSpinner from 'primevue/progressspinner'
 import Tag from 'primevue/tag'
 
-import { useConfigStore } from '../../day5/stores/configStore'
-import { useWeatherStore } from '../../day5/stores/weatherStore'
+import { useConfigStore } from '../../ver5/stores/configStore'
+import { useWeatherStore } from '../../ver5/stores/weatherStore'
 
 const route = useRoute()
 const router = useRouter()

@@ -2,9 +2,9 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
-import BaseDashboardCard from '../../day3/BaseDashboardCard.vue'
-import SearchBar from '../../day3/SearchBar.vue'
-import WeatherCard from '../../day3/WeatherCard.vue'
+import BaseDashboardCard from '../../ver3/BaseDashboardCard.vue'
+import SearchBar from '../../ver3/SearchBar.vue'
+import WeatherCard from '../../ver3/WeatherCard.vue'
 
 const router = useRouter()
 const route = useRoute()

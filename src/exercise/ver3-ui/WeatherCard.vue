@@ -1,5 +1,5 @@
 <script setup>
-// props / emit 계약은 day3 의 WeatherCard 와 동일하게 유지하고,
+// props / emit 계약은 ver3 의 WeatherCard 와 동일하게 유지하고,
 // 마크업만 PrimeVue 컴포넌트로 교체한다.
 import Button from 'primevue/button'
 import Card from 'primevue/card'

@@ -5,10 +5,10 @@ import Button from 'primevue/button'
 import Message from 'primevue/message'
 import ProgressSpinner from 'primevue/progressspinner'
 
-import BaseDashboardCard from '../../day6/BaseDashboardCard.vue'
-import SearchBar from '../../day6/SearchBar.vue'
+import BaseDashboardCard from '../../ver3-ui/BaseDashboardCard.vue'
+import SearchBar from '../../ver3-ui/SearchBar.vue'
 import WeatherCard from '../WeatherCardStore.vue'
-import { useWeatherStore } from '../../day5/stores/weatherStore'
+import { useWeatherStore } from '../../ver5/stores/weatherStore'
 
 const router = useRouter()
 const route = useRoute()

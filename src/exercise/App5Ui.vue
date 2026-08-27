@@ -4,12 +4,12 @@ import { useRoute, useRouter } from 'vue-router'
 import Menubar from 'primevue/menubar'
 import Toast from 'primevue/toast'
 
-import UnitToggler from './day7/UnitToggler.vue'
+import UnitToggler from './ver5-ui/UnitToggler.vue'
 
 const router = useRouter()
 const route = useRoute()
 
-// day4·day5 의 RouterLink 나열을 PrimeVue Menubar 로 대체한다.
+// ver4·ver5 의 RouterLink 나열을 PrimeVue Menubar 로 대체한다.
 const menuItems = computed(() => [
   {
     label: '날씨 대시보드',

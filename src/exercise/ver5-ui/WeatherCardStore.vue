@@ -1,11 +1,11 @@
 <script setup>
-// day5 의 WeatherCardStore 를 PrimeVue 로 다시 그린 버전.
+// ver5 의 WeatherCardStore 를 PrimeVue 로 다시 그린 버전.
 // props / emit 계약과 스토어 사용 방식은 그대로 유지한다.
 import Button from 'primevue/button'
 import Card from 'primevue/card'
 import Tag from 'primevue/tag'
 
-import { useConfigStore } from '../day5/stores/configStore'
+import { useConfigStore } from '../ver5/stores/configStore'
 
 defineProps({
   cityItem: {

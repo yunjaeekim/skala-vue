@@ -1,5 +1,5 @@
 <script setup>
-import WeatherComposition from './day2/WeatherComposition.vue'
+import WeatherComposition from './ver2/WeatherComposition.vue'
 </script>
 
 <template>

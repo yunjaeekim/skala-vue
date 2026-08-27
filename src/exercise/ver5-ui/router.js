@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import WeatherHomeView from './views/WeatherHomeView.vue'
 
 // 전체 화면에 외부 UI Library(PrimeVue)를 적용한 버전.
-// 데이터 로직은 day5 의 스토어를 그대로 재사용한다.
+// 데이터 로직은 ver5 의 스토어를 그대로 재사용한다.
 const routes = [
   {
     path: '/',

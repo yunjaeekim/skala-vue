@@ -1,5 +1,5 @@
 <script setup>
-import WeatherParent from './day6/WeatherParent.vue'
+import WeatherParent from './ver3-ui/WeatherParent.vue'
 </script>
 
 <template>

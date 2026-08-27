@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import WeatherHomeView from './views/WeatherHomeView.vue'
 
-// 기온이 표시되는 화면은 day5 전용(스토어 적용) View 를 사용하고,
-// 기온과 무관한 화면은 day4 에서 작성한 View 를 그대로 재사용한다.
+// 기온이 표시되는 화면은 ver5 전용(스토어 적용) View 를 사용하고,
+// 기온과 무관한 화면은 ver4 에서 작성한 View 를 그대로 재사용한다.
 const routes = [
   {
     path: '/',
@@ -12,7 +12,7 @@ const routes = [
   {
     path: '/about',
     name: 'WeatherAbout',
-    component: () => import('../day4/views/WeatherAboutView.vue'),
+    component: () => import('../ver4/views/WeatherAboutView.vue'),
   },
   {
     path: '/weather/:cityId',
@@ -32,7 +32,7 @@ const routes = [
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: () => import('../day4/views/NotFoundView.vue'),
+    component: () => import('../ver4/views/NotFoundView.vue'),
   },
 ]
 
