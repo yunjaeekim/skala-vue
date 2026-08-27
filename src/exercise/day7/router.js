@@ -20,6 +20,11 @@ const routes = [
     component: () => import('./views/WeatherDetailView.vue'),
   },
   {
+    path: '/history',
+    name: 'WeatherHistory',
+    component: () => import('./views/WeatherHistoryView.vue'),
+  },
+  {
     path: '/forecast',
     name: 'WeatherForecast',
     component: () => import('./views/WeatherForecastView.vue'),

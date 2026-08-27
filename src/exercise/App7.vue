@@ -18,6 +18,12 @@ const menuItems = computed(() => [
     command: () => router.push('/'),
   },
   {
+    label: '과거 날씨 조회',
+    icon: 'pi pi-history',
+    class: route.path === '/history' ? 'active-item' : '',
+    command: () => router.push('/history'),
+  },
+  {
     label: '5일 예보',
     icon: 'pi pi-calendar',
     class: route.path === '/forecast' ? 'active-item' : '',
